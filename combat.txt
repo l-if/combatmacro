@@ -1,0 +1,29 @@
+TOGGLE(@combat)
+
+KEYDOWN("forward")
+KEYDOWN("sneak")
+
+DO()
+    FOREACH("entities")
+        IFMATCHES(%ENTITYNAME%,"Ghoul")
+            IF((#x!=%ENTITYXPOS%)&&(#y!=%ENTITYYPOS%-1)&&(#z!=%ENTITYZPOS%))
+                #x=%ENTITYXPOS%
+                #y=%ENTITYYPOS%-1
+                #z=%ENTITYZPOS%
+                BREAK
+            ENDIF
+        ENDIF
+    NEXT
+    CALCYAWTO(%#x%,%#y%,%#z%,#yaw,#dist,#pitch)
+    IF(%#yaw%<180)
+        #yaw=#yaw+180
+    ELSE
+        #yaw=#yaw-180
+    ENDIF
+    LOOKS(%#yaw%,%#pitch%,0.5)
+    KEY("use")
+    WAIT(10t)
+WHILE(@combat)
+
+KEYUP("forward")
+KEYUP("sneak")
